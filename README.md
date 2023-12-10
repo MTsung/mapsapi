@@ -29,8 +29,9 @@ use Mtsung\Mapsapi\TwddMap\Geocoding;
 
 ```php
 Mysql, Mongo        # 自行配置
-MAP8_API_KEY=""     # 圖霸 KEY
-GOOGLE_API_KEY=""   # Google API KEY
+MAPSAPI_GOOGLE_API_KEY=""     # 圖霸 KEY
+MAPSAPI_MAP8_API_KEY=""   # Google API KEY
+MAPSAPI_ENABLE_TWDD_MONGO=false
 ```
 
 ## Usage
