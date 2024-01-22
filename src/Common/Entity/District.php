@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class District extends Model
 {
-    /**
-     * Table Name
-     *
-     * @var string
-     */
-    protected $table = 'district';
+    public function getTable(): string
+    {
+        return env('MAPSAPI_DISTRICT_TABLE_NAME', 'districts');
+    }
+
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Mtsung\Mapsapi\Common\Repository;
 
+use Mtsung\Mapsapi\Common\Entity\City;
 use Mtsung\Mapsapi\Common\Entity\District;
 
 use Illuminate\Support\Facades\Log;
@@ -20,14 +21,19 @@ class AresRepository
         $data = [];
 
         try {
-            $data = District::whereRaw('1=1')
+            // 五碼轉三碼
+            if ($postcode > 999) {
+                $postcode = floor($postcode / 100);
+            }
+
+            $data = District::query()
                 ->select(
-                    'city.id as city_id',
-                    'district.id as district_id',
-                    'zip'
+                    City::getTableName() . '.id as city_id',
+                    District::getTableName() . '.id as district_id',
+                    'zip_code as zip'
                 )
-                ->join('city', 'district.city_id', '=', 'city.id')
-                ->where('zip', $postcode)
+                ->join(City::getTableName(), District::getTableName() . '.city_id', City::getTableName() . '.id')
+                ->where('zip_code', $postcode)
                 ->first();
 
             $data = ($data) ? $data->toArray() : [];
@@ -51,15 +57,15 @@ class AresRepository
         $data = [];
 
         try {
-            $data = District::whereRaw('1=1')
+            $data = District::query()
                 ->select(
-                    'city.id as city_id',
-                    'district.id as district_id',
-                    'zip'
+                    City::getTableName() . '.id as city_id',
+                    District::getTableName() . '.id as district_id',
+                    'zip_code as zip'
                 )
-                ->join('city', 'district.city_id', '=', 'city.id')
-                ->where('city.name', $city)
-                ->where('district.name', $district)
+                ->join(City::getTableName(), District::getTableName() . '.city_id', City::getTableName() . '.id')
+                ->where(City::getTableName() . '.name', $city)
+                ->where(District::getTableName() . '.name', $district)
                 ->first();
 
             $data = ($data) ? $data->toArray() : [];
